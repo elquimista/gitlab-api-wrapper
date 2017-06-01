@@ -1,0 +1,25 @@
+{
+  "name": "gitlab-api-wrapper",
+  "version": "1.0.0",
+  "description": "The most comprehensive GitLab API, almost covers all GitLab API endpoints. Also, we provide an isomorphic API which can be used in both browser and Node.js environments.",
+  "keywords": [
+    "gitlab",
+    "api",
+    "client"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha tests/*.js --timeout 20000"
+  },
+  "repository": "https://github.com/clthck/gitlab-api-wrapper",
+  "author": "clthck",
+  "license": "MIT",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "query-string": "^4.3.4"
+  },
+  "devDependencies": {
+    "mocha": "^3.4.2",
+    "should": "^11.2.1"
+  }
+}
