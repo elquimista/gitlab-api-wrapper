@@ -1,7 +1,7 @@
 # gitlab-api-wrapper
 
-[![npm-version][https://img.shields.io/npm/v/gitlab-api-wrapper.svg?style=flat-square]][https://www.npmjs.com/package/gitlab-api-wrapper]
-[![npm-downloads][https://img.shields.io/npm/dt/gitlab-api-wrapper.svg?style=flat-square]][https://www.npmjs.com/package/gitlab-api-wrapper]
+[![npm-version](https://img.shields.io/npm/v/gitlab-api-wrapper.svg?style=flat-square)](https://www.npmjs.com/package/gitlab-api-wrapper)
+[![npm-downloads](https://img.shields.io/npm/dt/gitlab-api-wrapper.svg?style=flat-square)](https://www.npmjs.com/package/gitlab-api-wrapper)
 
 ---
 
