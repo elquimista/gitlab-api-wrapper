@@ -1,6 +1,6 @@
 {
   "name": "gitlab-api-wrapper",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "The most comprehensive GitLab API, almost covers all GitLab API endpoints. Also, we provide an isomorphic API which can be used in both browser and Node.js environments.",
   "keywords": [
     "gitlab",
