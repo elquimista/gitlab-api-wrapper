@@ -1,9 +1,9 @@
 'use strict';
 
-const ApiV4 = require('./lib/apiV4');
+const ApiV3 = require('./lib/apiV3');
 
 module.exports = (options) => {
-  return new ApiV4(options);
+  return new ApiV3(options);
 };
 
-module.exports.ApiV4 = ApiV4;
+module.exports.ApiV3 = ApiV3;
