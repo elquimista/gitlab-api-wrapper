@@ -1,0 +1,967 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <title>Commits API - GitLab Documentation</title>
+  <meta name="description" content="Documentation for GitLab Community Edition, GitLab Enterprise Edition, Omnibus GitLab, and GitLab Runner.">
+  <link rel="stylesheet" href="/assets/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" href="/assets/stylesheets/font-awesome.min.css">
+  <link rel="stylesheet" href="/assets/stylesheets/stylesheet-v19.css">
+  <link rel="stylesheet" href="/assets/stylesheets/highlight-v5.css">
+  <link rel="stylesheet" href="/assets/stylesheets/footer-v3.css">
+  <link rel="stylesheet" href="/assets/stylesheets/docsearch.min.css">
+  <link rel="stylesheet" href="/assets/stylesheets/toc-v2.css">
+  <script async src="/assets/javascripts/docs.js"></script>
+  <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,400italic' rel='stylesheet' type='text/css'>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  <!-- you don't need to keep this, but it's cool for stats! -->
+  <meta name="generator" content="Nanoc 4.8.4">
+</head>
+
+  <body>
+    <div class="header">
+  <a href="/">
+    <img src="/assets/images/gitlab-logo.svg" width="50" />
+    <p>GitLab Documentation</p>
+  </a>
+  <div class="nav-container">
+    <a class="nav-toggle" id="docs-nav-toggle">Menu</a>
+    <ul class="nav">
+      <li class="search"><input type="text" class="docsearch" placeholder="Search"></li>
+      
+        
+      
+        
+          <li class="nav-item">
+            <a href="/ee/README.html">
+              GitLab
+            </a>
+          </li>
+        
+      
+        
+          <li class="nav-item">
+            <a href="/omnibus/README.html">
+              Omnibus
+            </a>
+          </li>
+        
+      
+        
+          <li class="nav-item">
+            <a href="/runner/">
+              Runner
+            </a>
+          </li>
+        
+      
+    </ul>
+  </div>
+</div>
+
+    <div class=wrapper>
+      <div id="doc-nav" class="doc-nav">
+      </div>
+      <div class="main class">
+        
+          
+          
+            <ul class="breadcrumbs">
+              
+                <li class="breadcrumb"><a href="/ee/README.html">GitLab Documentation</a></li>
+              
+                <li class="breadcrumb"><a href="/ee/api/README.html">GitLab API</a></li>
+              
+              <li class="breadcrumb">Commits API</li>
+            </ul>
+          
+        
+        <ul>
+<li>
+<a href="#commits-api">Commits API</a>
+<ul>
+<li>
+<a href="#list-repository-commits">List repository commits</a>
+</li>
+<li>
+<a href="#create-a-commit-with-multiple-files-and-actions">Create a commit with multiple files and actions</a>
+</li>
+<li>
+<a href="#get-a-single-commit">Get a single commit</a>
+</li>
+<li>
+<a href="#cherry-pick-a-commit">Cherry pick a commit</a>
+</li>
+<li>
+<a href="#get-the-diff-of-a-commit">Get the diff of a commit</a>
+</li>
+<li>
+<a href="#get-the-comments-of-a-commit">Get the comments of a commit</a>
+</li>
+<li>
+<a href="#post-comment-to-commit">Post comment to commit</a>
+</li>
+<li>
+<a href="#commit-status">Commit status</a>
+<ul>
+<li>
+<a href="#get-the-status-of-a-commit">Get the status of a commit</a>
+</li>
+<li>
+<a href="#post-the-build-status-to-a-commit">Post the build status to a commit</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id='commits-api'>Commits API <a class='anchor' href='#commits-api' title='Permalink'></a></h1><h2 id='list-repository-commits'>List repository commits <a class='anchor' href='#list-repository-commits' title='Permalink'></a></h2>
+<p>Get a list of repository commits in a project.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>GET /projects/:id/repository/commits
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>ref_name</code></td>
+<td>string</td>
+<td>no</td>
+<td>The name of a repository branch or tag or if not given the default branch</td>
+</tr>
+<tr>
+<td><code>since</code></td>
+<td>string</td>
+<td>no</td>
+<td>Only commits after or on this date will be returned in ISO 8601 format YYYY-MM-DDTHH:MM:SSZ</td>
+</tr>
+<tr>
+<td><code>until</code></td>
+<td>string</td>
+<td>no</td>
+<td>Only commits before or on this date will be returned in ISO 8601 format YYYY-MM-DDTHH:MM:SSZ</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/5/repository/commits"</span>
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ed899a2f4b50b4370feeea94676502b42383c746"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ed899a2f4b5"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Replace sanitize with escape once"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"author_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy Zaporozhets"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"author_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dzaporozhets@sphereconsultinginc.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"authored_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T11:50:22+03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"committer_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Administrator"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"committer_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin@example.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"committed_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T11:50:22+03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T11:50:22+03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Replace sanitize with escape once"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"parent_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"6104942438c14ec7bd21c6cd5bd995272b3faff6"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6104942438c14ec7bd21c6cd5bd995272b3faff6"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6104942438c"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sanitize for network graph"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"author_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"randx"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"author_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmitriy.zaporozhets@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"committer_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"committer_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmitriy.zaporozhets@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T09:06:12+03:00"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sanitize for network graph"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"parent_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"ae1d9fb46aa2b07ee9836d49862ec4e2c46fbbba"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div><h2 id='create-a-commit-with-multiple-files-and-actions'>Create a commit with multiple files and actions <a class='anchor' href='#create-a-commit-with-multiple-files-and-actions' title='Permalink'></a></h2>
+<blockquote>
+<p><a href="https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/6096" title="Multi-file commit">Introduced</a> in GitLab 8.13.</p>
+</blockquote>
+
+<p>Create a commit by posting a JSON payload</p>
+<div class="highlight"><pre class="highlight plaintext"><code>POST /projects/:id/repository/commits
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a></td>
+</tr>
+<tr>
+<td><code>branch</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Name of the branch to commit into. To create a new branch, also provide <code>start_branch</code>.</td>
+</tr>
+<tr>
+<td><code>commit_message</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Commit message</td>
+</tr>
+<tr>
+<td><code>start_branch</code></td>
+<td>string</td>
+<td>no</td>
+<td>Name of the branch to start the new commit from</td>
+</tr>
+<tr>
+<td><code>actions[]</code></td>
+<td>array</td>
+<td>yes</td>
+<td>An array of action hashes to commit as a batch. See the next table for what attributes it can take.</td>
+</tr>
+<tr>
+<td><code>author_email</code></td>
+<td>string</td>
+<td>no</td>
+<td>Specify the commit author&#39;s email address</td>
+</tr>
+<tr>
+<td><code>author_name</code></td>
+<td>string</td>
+<td>no</td>
+<td>Specify the commit author&#39;s name</td>
+</tr>
+</tbody></table>
+
+<table><thead>
+<tr>
+<th><code>actions[]</code> Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>action</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The action to perform, <code>create</code>, <code>delete</code>, <code>move</code>, <code>update</code></td>
+</tr>
+<tr>
+<td><code>file_path</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Full path to the file. Ex. <code>lib/class.rb</code></td>
+</tr>
+<tr>
+<td><code>previous_path</code></td>
+<td>string</td>
+<td>no</td>
+<td>Original full path to the file being moved. Ex. <code>lib/class1.rb</code></td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string</td>
+<td>no</td>
+<td>File content, required for all except <code>delete</code>. Optional for <code>move</code></td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>string</td>
+<td>no</td>
+<td><code>text</code> or <code>base64</code>. <code>text</code> is default.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">PAYLOAD</span><span class="o">=</span><span class="k">$(</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="sh">'</span><span class="no">JSON</span><span class="sh">'
+{
+  "branch": "master",
+  "commit_message": "some commit message",
+  "actions": [
+    {
+      "action": "create",
+      "file_path": "foo/bar",
+      "content": "some content"
+    },
+    {
+      "action": "delete",
+      "file_path": "foo/bar2"
+    },
+    {
+      "action": "move",
+      "file_path": "foo/bar3",
+      "previous_path": "foo/bar4",
+      "content": "some content"
+    },
+    {
+      "action": "update",
+      "file_path": "foo/bar5",
+      "content": "new content"
+    }
+  ]
+}
+</span><span class="no">JSON
+</span><span class="k">)</span>
+curl <span class="nt">--request</span> POST <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="nt">--header</span> <span class="s2">"Content-Type: application/json"</span> <span class="nt">--data</span> <span class="s2">"</span><span class="nv">$PAYLOAD</span><span class="s2">"</span> https://gitlab.example.com/api/v4/projects/1/repository/commits
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ed899a2f4b50b4370feeea94676502b42383c746"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ed899a2f4b5"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some commit message"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy Zaporozhets"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dzaporozhets@sphereconsultinginc.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy Zaporozhets"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dzaporozhets@sphereconsultinginc.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-09-20T09:26:24.000-07:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some commit message"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"parent_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"ae1d9fb46aa2b07ee9836d49862ec4e2c46fbbba"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"committed_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-09-20T09:26:24.000-07:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"authored_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-09-20T09:26:24.000-07:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"additions"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deletions"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='get-a-single-commit'>Get a single commit <a class='anchor' href='#get-a-single-commit' title='Permalink'></a></h2>
+<p>Get a specific commit identified by the commit hash or name of a branch or tag.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>GET /projects/:id/repository/commits/:sha
+</code></pre></div>
+<p>Parameters:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit hash or name of a repository branch or tag</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/5/repository/commits/master
+</span></code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6104942438c14ec7bd21c6cd5bd995272b3faff6"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6104942438c"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sanitize for network graph"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"randx"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmitriy.zaporozhets@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmitriy.zaporozhets@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T09:06:12+03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sanitize for network graph"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committed_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T09:06:12+03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"authored_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-09-20T09:06:12+03:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"parent_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"ae1d9fb46aa2b07ee9836d49862ec4e2c46fbbba"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"stats"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"additions"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deletions"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"total"</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"running"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='cherry-pick-a-commit'>Cherry pick a commit <a class='anchor' href='#cherry-pick-a-commit' title='Permalink'></a></h2>
+<blockquote>
+<p><a href="https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/8047">Introduced</a> in GitLab 8.15.</p>
+</blockquote>
+
+<p>Cherry picks a commit to a given branch.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>POST /projects/:id/repository/commits/:sha/cherry_pick
+</code></pre></div>
+<p>Parameters:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit hash</td>
+</tr>
+<tr>
+<td><code>branch</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The name of the branch</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--request</span> POST <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="nt">--form</span> <span class="s2">"branch=master"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/5/repository/commits/master/cherry_pick"</span>
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8b090c1b79a14f2bd9e8a738f717824ff53aebad"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"short_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8b090c1b"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature added"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dmitriy Zaporozhets"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"author_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmitriy.zaporozhets@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"authored_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-12-12T20:10:39.000+01:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-12-12T20:10:39.000+01:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Administrator"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committer_email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin@example.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"committed_date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-12-12T20:10:39.000+01:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature added"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature added</span><span class="se">\n\n</span><span class="s2">Signed-off-by: Dmitriy Zaporozhets &lt;dmitriy.zaporozhets@gmail.com&gt;</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"parent_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"a738f717824ff53aebad8b090c1b79a14f2bd9e8"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='get-the-diff-of-a-commit'>Get the diff of a commit <a class='anchor' href='#get-the-diff-of-a-commit' title='Permalink'></a></h2>
+<p>Get the diff of a commit in a project.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>GET /projects/:id/repository/commits/:sha/diff
+</code></pre></div>
+<p>Parameters:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit hash or name of a repository branch or tag</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/5/repository/commits/master/diff"</span>
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"diff"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--- a/doc/update/5.4-to-6.0.md</span><span class="se">\n</span><span class="s2">+++ b/doc/update/5.4-to-6.0.md</span><span class="se">\n</span><span class="s2">@@ -71,6 +71,8 @@</span><span class="se">\n</span><span class="s2"> sudo -u git -H bundle exec rake migrate_keys RAILS_ENV=production</span><span class="se">\n</span><span class="s2"> sudo -u git -H bundle exec rake migrate_inline_notes RAILS_ENV=production</span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2">+sudo -u git -H bundle exec rake gitlab:assets:compile RAILS_ENV=production</span><span class="se">\n</span><span class="s2">+</span><span class="se">\n</span><span class="s2"> ```</span><span class="se">\n</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> ### 6. Update config files"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"new_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"doc/update/5.4-to-6.0.md"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"old_path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"doc/update/5.4-to-6.0.md"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a_mode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"b_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100644"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"new_file"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"renamed_file"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deleted_file"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div><h2 id='get-the-comments-of-a-commit'>Get the comments of a commit <a class='anchor' href='#get-the-comments-of-a-commit' title='Permalink'></a></h2>
+<p>Get the comments of a commit in a project.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>GET /projects/:id/repository/commits/:sha/comments
+</code></pre></div>
+<p>Parameters:</p>
+
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit hash or name of a repository branch or tag</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/5/repository/commits/master/comments"</span>
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"note"</span><span class="p">:</span><span class="w"> </span><span class="s2">"this code is really nice"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"author"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin@local.host"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Administrator"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-03-06T08:17:35.000Z"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div><h2 id='post-comment-to-commit'>Post comment to commit <a class='anchor' href='#post-comment-to-commit' title='Permalink'></a></h2>
+<p>Adds a comment to a commit.</p>
+
+<p>In order to post a comment in a particular line of a particular file, you must
+specify the full commit SHA, the <code>path</code>, the <code>line</code> and <code>line_type</code> should be
+<code>new</code>.</p>
+
+<p>The comment will be added at the end of the last commit if at least one of the
+cases below is valid:</p>
+
+<ul>
+<li>the <code>sha</code> is instead a branch or a tag and the <code>line</code> or <code>path</code> are invalid</li>
+<li>the <code>line</code> number is invalid (does not exist)</li>
+<li>the <code>path</code> is invalid (does not exist)</li>
+</ul>
+
+<p>In any of the above cases, the response of <code>line</code>, <code>line_type</code> and <code>path</code> is
+set to <code>null</code>.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>POST /projects/:id/repository/commits/:sha/comments
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit SHA or name of a repository branch or tag</td>
+</tr>
+<tr>
+<td><code>note</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The text of the comment</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td>no</td>
+<td>The file path relative to the repository</td>
+</tr>
+<tr>
+<td><code>line</code></td>
+<td>integer</td>
+<td>no</td>
+<td>The line number where the comment should be placed</td>
+</tr>
+<tr>
+<td><code>line_type</code></td>
+<td>string</td>
+<td>no</td>
+<td>The line type. Takes <code>new</code> or <code>old</code> as arguments</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--request</span> POST <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="nt">--form</span> <span class="s2">"note=Nice picture man</span><span class="se">\!</span><span class="s2">"</span> <span class="nt">--form</span> <span class="s2">"path=dudeism.md"</span> <span class="nt">--form</span> <span class="s2">"line=11"</span> <span class="nt">--form</span> <span class="s2">"line_type=new"</span> https://gitlab.example.com/api/v4/projects/17/repository/commits/18f3e63d05582537db6d183d9d557be09e1f90c8/comments
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">{</span><span class="w">
+   </span><span class="s2">"author"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"web_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"avatar_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/uploads/user/avatar/28/The-Big-Lebowski-400-400.png"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"username"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"thedude"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"state"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Jeff Lebowski"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"created_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-19T09:44:55.600Z"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"line_type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"new"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"path"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"dudeism.md"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"line"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"note"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Nice picture man!"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='commit-status'>Commit status <a class='anchor' href='#commit-status' title='Permalink'></a></h2>
+<p>Since GitLab 8.1, this is the new commit status API.</p>
+<h3 id='get-the-status-of-a-commit'>Get the status of a commit <a class='anchor' href='#get-the-status-of-a-commit' title='Permalink'></a></h3>
+<p>Get the statuses of a commit in a project.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>GET /projects/:id/repository/commits/:sha/statuses
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit SHA</td>
+</tr>
+<tr>
+<td><code>ref</code></td>
+<td>string</td>
+<td>no</td>
+<td>The name of a repository branch or tag or, if not given, the default branch</td>
+</tr>
+<tr>
+<td><code>stage</code></td>
+<td>string</td>
+<td>no</td>
+<td>Filter by <a href="../ci/yaml/README.html#stages">build stage</a>, e.g., <code>test</code></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>no</td>
+<td>Filter by <a href="../ci/yaml/README.html#jobs">job name</a>, e.g., <code>bundler:audit</code></td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td>boolean</td>
+<td>no</td>
+<td>Return all statuses, not only the latest ones</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/17/repository/commits/18f3e63d05582537db6d183d9d557be09e1f90c8/statuses
+</span></code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">[</span><span class="w">
+   </span><span class="err">...</span><span class="w">
+
+   </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-19T08:40:25.934Z"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"started_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"bundler:audit"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"allow_failure"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"author"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"username"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"thedude"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"state"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"web_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"avatar_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/uploads/user/avatar/28/The-Big-Lebowski-400-400.png"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Jeff Lebowski"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"sha"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"18f3e63d05582537db6d183d9d557be09e1f90c8"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"target_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude/gitlab-ce/builds/91"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"finished_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">91</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ref"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"master"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"started_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"flay"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"allow_failure"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"pending"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"created_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-19T08:40:25.832Z"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"target_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude/gitlab-ce/builds/90"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">90</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"finished_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"ref"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"master"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"sha"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"18f3e63d05582537db6d183d9d557be09e1f90c8"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"author"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Jeff Lebowski"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"username"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"thedude"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"web_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"state"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"avatar_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/uploads/user/avatar/28/The-Big-Lebowski-400-400.png"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+
+   </span><span class="err">...</span><span class="w">
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div><h3 id='post-the-build-status-to-a-commit'>Post the build status to a commit <a class='anchor' href='#post-the-build-status-to-a-commit' title='Permalink'></a></h3>
+<p>Adds or updates a build status of a commit.</p>
+<div class="highlight"><pre class="highlight plaintext"><code>POST /projects/:id/statuses/:sha
+</code></pre></div>
+<table><thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>id</code></td>
+<td>integer/string</td>
+<td>yes</td>
+<td>The ID or <a href="README.html#namespaced-path-encoding">URL-encoded path of the project</a> owned by the authenticated user</td>
+</tr>
+<tr>
+<td><code>sha</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The commit SHA</td>
+</tr>
+<tr>
+<td><code>state</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The state of the status. Can be one of the following: <code>pending</code>, <code>running</code>, <code>success</code>, <code>failed</code>, <code>canceled</code></td>
+</tr>
+<tr>
+<td><code>ref</code></td>
+<td>string</td>
+<td>no</td>
+<td>The <code>ref</code> (branch or tag) to which the status refers</td>
+</tr>
+<tr>
+<td><code>name</code> or <code>context</code></td>
+<td>string</td>
+<td>no</td>
+<td>The label to differentiate this status from the status of other systems. Default value is <code>default</code></td>
+</tr>
+<tr>
+<td><code>target_url</code></td>
+<td>string</td>
+<td>no</td>
+<td>The target URL to associate with this status</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>no</td>
+<td>The short description of the status</td>
+</tr>
+<tr>
+<td><code>coverage</code></td>
+<td>float</td>
+<td>no</td>
+<td>The total code coverage</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell"><code>curl <span class="nt">--request</span> POST <span class="nt">--header</span> <span class="s2">"PRIVATE-TOKEN: 9koXpg98eAheJpvBs5tK"</span> <span class="s2">"https://gitlab.example.com/api/v4/projects/17/statuses/18f3e63d05582537db6d183d9d557be09e1f90c8?state=success"</span>
+</code></pre></div>
+<p>Example response:</p>
+<div class="highlight"><pre class="highlight json"><code><span class="p">{</span><span class="w">
+   </span><span class="s2">"author"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"web_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/thedude"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Jeff Lebowski"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"avatar_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://gitlab.example.com/uploads/user/avatar/28/The-Big-Lebowski-400-400.png"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"username"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"thedude"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"state"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"name"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"sha"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"18f3e63d05582537db6d183d9d557be09e1f90c8"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"success"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"coverage"</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">93</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"target_url"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"ref"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"started_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"created_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-19T09:05:50.355Z"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"allow_failure"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"finished_at"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-01-19T09:05:50.365Z"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+        <hr>
+        <div class="edit-on">
+          <a href='https://gitlab.com/gitlab-org/gitlab-ee/blob/master/doc/api/commits.md'>Edit this page</a>
+        </div>
+        
+  
+    <div id='discourse-comments'></div>
+    <script type="text/javascript">
+      DiscourseEmbed = { discourseUrl: 'https://forum.gitlab.com/',
+        discourseEmbedUrl: 'https://docs.gitlab.com/ee/api/commits.html' };
+
+      (function() {
+        var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
+        d.src = DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
+      })();
+    </script>
+  
+
+
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <footer class=footer>
+  <svg width=65 height=60 viewBox="0 0 210 194" class=footer-logo> <path d="M105.0614,193.655 L105.0614,193.655 L143.7014,74.734 L66.4214,74.734 L105.0614,193.655 L105.0614,193.655 Z" fill="#E24329" class="logo-svg-shape logo-dark-orange-shape"/> <path d="M105.0614,193.6548 L66.4214,74.7338 L12.2684,74.7338 L105.0614,193.6548 Z" fill="#FC6D26" class="logo-svg-shape logo-orange-shape"/> <path d="M12.2685,74.7341 L12.2685,74.7341 L0.5265,110.8731 C-0.5445,114.1691 0.6285,117.7801 3.4325,119.8171 L105.0615,193.6551 L12.2685,74.7341 Z" fill="#FCA326" class="logo-svg-shape logo-light-orange-shape"/> <path d="M12.2685,74.7342 L66.4215,74.7342 L43.1485,3.1092 C41.9515,-0.5768 36.7375,-0.5758 35.5405,3.1092 L12.2685,74.7342 Z" fill="#E24329" class="logo-svg-shape logo-dark-orange-shape"/> <path d="M105.0614,193.6548 L143.7014,74.7338 L197.8544,74.7338 L105.0614,193.6548 Z" fill="#FC6D26" class="logo-svg-shape logo-orange-shape"/> <path d="M197.8544,74.7341 L197.8544,74.7341 L209.5964,110.8731 C210.6674,114.1691 209.4944,117.7801 206.6904,119.8171 L105.0614,193.6551 L197.8544,74.7341 Z" fill="#FCA326" class="logo-svg-shape logo-light-orange-shape"/> <path d="M197.8544,74.7342 L143.7014,74.7342 L166.9744,3.1092 C168.1714,-0.5768 173.3854,-0.5758 174.5824,3.1092 L197.8544,74.7342 Z" fill="#E24329" class="logo-svg-shape logo-dark-orange-shape"/> </svg>
+
+  <div class='animated container'>
+    <ul class='text-center footer-social'>
+      <li> <a href="https://twitter.com/gitlab" target="_blank"><i class='fa fa-twitter'></i> <span class=sr-only>Twitter</span></a></li>
+      <li> <a href="https://www.facebook.com/gitlab" target="_blank"><i class='fa fa-facebook'></i> <span class=sr-only>Facebook</span> </a></li>
+      <li> <a href="https://www.youtube.com/channel/UCnMGQ8QHMAnVIsI3xJrihhg" target="_blank"><i class='fa fa-youtube'></i> <span class=sr-only>YouTube</span> </a></li>
+      <li> <a href="https://www.linkedin.com/company/gitlab-com" target="_blank"><i class='fa fa-linkedin'></i> <span class=sr-only>LinkedIn</span> </a></li>
+    </ul>
+    <div class=row>
+      <div class='col-sm-6 col-md-3 col-lg-2 col-lg-offset-2 footer-link-holder'>
+        <h3 class=footer-link-title>Products</h3>
+        <ul class='animated footer-links'>
+          <li><a href="https://about.gitlab.com/features" target="_blank">Features</a></li>
+          <li><a href="https://about.gitlab.com/gitlab-ee" target="_blank">Enterprise Edition</a></li>
+          <li><a href="https://about.gitlab.com/installation" target="_blank">Community Edition</a></li>
+          <li><a href="https://about.gitlab.com/gitlab-com/" target="_blank">GitLab.com</a></li>
+          <li><a href="https://about.gitlab.com/products/" target="_blank">Pricing</a></li>
+        </ul>
+      </div>
+      <div class='col-sm-6 col-md-3 col-lg-2 footer-link-holder'>
+        <h3 class=footer-link-title>Services</h3>
+        <ul class='animated footer-links'>
+          <li><a href="https://about.gitlab.com/resellers/" target="_blank">Resellers</a></li>
+          <li><a href="https://about.gitlab.com/consultancy/" target="_blank">Consultancy</a></li>
+          <li><a href="https://about.gitlab.com/development/" target="_blank">Development</a></li>
+          <li><a href="https://about.gitlab.com/training/" target="_blank">Training</a></li>
+        </ul>
+      </div>
+      <div class='col-sm-6 col-md-3 col-lg-2 footer-link-holder'>
+        <h3 class=footer-link-title>Community</h3>
+        <ul class='animated footer-links'>
+          <li><a href="https://about.gitlab.com/events/" target="_blank">Events</a></li>
+          <li><a href="https://about.gitlab.com/core-team/" target="_blank">Core Team</a></li>
+          <li><a href="http://contributors.gitlab.com/" target="_blank">Contributors</a></li>
+          <li><a href="/">Documentation</a></li>
+          <li><a href="https://about.gitlab.com/getting-help/" target="_blank">Getting Help</a></li>
+          <li><a href="https://about.gitlab.com/contributing/" target="_blank">Contributing</a></li>
+          <li><a href="https://about.gitlab.com/applications/" target="_blank">Applications</a></li>
+          <li><a href="https://about.gitlab.com/mvp/" target="_blank">Hall of Fame</a></li>
+        </ul>
+      </div>
+      <div class='col-sm-6 col-md-3 col-lg-2 footer-link-holder'>
+        <h3 class=footer-link-title>Company</h3>
+        <ul class='animated footer-links'>
+          <li><a href="https://gitlab.com/groups/gitlab-org" target="_blank">Source Code</a></li>
+          <li><a href="https://about.gitlab.com/blog/" target="_blank">Blog</a></li>
+          <li><a href="https://about.gitlab.com/press/" target="_blank">Press and Logos</a></li>
+          <li><a href="https://about.gitlab.com/about/" target="_blank">About Us</a></li>
+          <li><a href="https://about.gitlab.com/team/" target="_blank">Team</a></li>
+          <li><a href="https://about.gitlab.com/direction/" target="_blank">Direction</a></li>
+          <li><a href="https://about.gitlab.com/handbook/" target="_blank">Handbook</a></li>
+          <li><a href="https://about.gitlab.com/jobs/" target="_blank">Open Jobs</a></li>
+          <li><a href="https://about.gitlab.com/terms/" target="_blank">Terms</a></li>
+          <li><a href="https://about.gitlab.com/contact/" target="_blank">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class='animated text-center source-link'>
+    <a href='https://gitlab.com/gitlab-com/gitlab-docs' target='_blank'>Created</a> with Nanoc, hosted on <a href='https://about.gitlab.com/features/pages/' target='_blank'>GitLab Pages</a>
+  </div>
+</footer>
+
+    <!-- Algolia docsearch https://community.algolia.com/docsearch/ -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+apiKey: 'a28a7d97a1c7b6a4770b31ce4e48415e',
+indexName: 'gitlab',
+inputSelector: '.docsearch',
+algoliaOptions: {
+  // Filter by tags as described in https://github.com/algolia/docsearch-configs/blob/master/configs/gitlab.json
+  'filters': "tags:ce OR tags:ee OR tags:omnibus OR tags:runner",
+  // Number of results shown in the search dropdown
+  'hitsPerPage': 10
+},
+debug: false // Set debug to true if you want to inspect the dropdown
+  });
+</script>
+
+    <!-- Google Analytics -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-37019925-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<!-- Facebook -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','//connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '1689559637958103');
+  fbq('track', "PageView");
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1689559637958103&ev=PageView&noscript=1"
+/></noscript>
+
+<!-- Marketo -->
+<script type="text/javascript">
+  (function() {
+    var didInit = false;
+    function initMunchkin() {
+      if(didInit === false) {
+        didInit = true;
+        Munchkin.init('194-VVC-221');
+      }
+    }
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = '//munchkin.marketo.net/munchkin.js';
+    s.onreadystatechange = function() {
+      if (this.readyState == 'complete' || this.readyState == 'loaded') {
+        initMunchkin();
+      }
+    };
+    s.onload = initMunchkin;
+    document.getElementsByTagName('head')[0].appendChild(s);
+  })();
+</script>
+
+  </body>
+</html>
