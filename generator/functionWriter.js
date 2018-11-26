@@ -2,13 +2,14 @@
 
 const async = require('async');
 const fs = require('fs');
-const jsonDef = require('./result_complete2.json');
+const jsonDef = require('../result_21-11-18-fixedapis.json');
 
 
 function prefix(descriptionName, className) {
     return `
 'use strict';
 
+/*eslint-disable */
 const ModelBase = require('../modelBase');
 
 /**
@@ -111,6 +112,8 @@ function createfunctionDefinition(functionName, params, _api) {
         returnStatement += 'this.http.put(`';
     } else if (method.startsWith('POST')) {
         returnStatement += 'this.http.post(`';
+    } else if (method.startsWith('PATCH')) {
+        returnStatement += 'this.http.patch(`';
     } else if (method.startsWith('DELETE')) {
         returnStatement += 'this.http.delete(`';
     } else {
@@ -236,7 +239,7 @@ return async.series(jsonDef.map((apiType) => {
 
         newClass += appendix(className);
 
-        return fs.writeFile(`../lib/models/${fileName}.js`, newClass, (err) => {
+        return fs.writeFile(`lib/models/${fileName}.js`, newClass, (err) => {
             if (err) {
                 console.log(err);
             }

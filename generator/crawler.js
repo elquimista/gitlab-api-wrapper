@@ -14,7 +14,7 @@ function enterResource(url, callback) {
         src: [jquery],
         done: function (errors, window) {
             const allEntries = [];
-            const $ = window.$;
+            const { $ } = window;
             console.log('Reading resource...');
             $(':header').each(function () {
                 console.log(' ');
@@ -23,6 +23,10 @@ function enterResource(url, callback) {
                     return;
                 }
                 title = title.replace('-39-s', '');
+
+                if (title === 'help-and-feedback') {
+                    return;
+                }
 
                 console.log('############# New Entry ##############');
                 const description = $(this).nextAll('p').first().text();
@@ -101,13 +105,21 @@ return jsdom.env({
     url: 'https://docs.gitlab.com/ee/api/README.html',
     src: [jquery],
     done: function (errors, window) {
-        const $ = window.$;
+        const { $ } = window;
         console.log('Links');
         // Get List of entries.
         $('#resources').next().next().children()
             .each(function () {
                 const urlPart = $(this).children(':first').attr('href');
                 console.log(urlPart);
+
+                if (urlPart === 'v3_to_v4.html') {
+                    return;
+                }
+
+                if (urlPart === '../ci/triggers/README.html') {
+                    return;
+                }
 
                 const url = `https://docs.gitlab.com/ee/api/${urlPart}`;
                 enterResource(url, (allEntries) => {
